@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import TermsPopUp from './TermsPopUp';
 const { Configuration, OpenAIApi } = require("openai");
+
 
 export default function TextBox() {
     // State for input text
@@ -7,6 +9,7 @@ export default function TextBox() {
     const [rep, setRep] = useState("Simplified text...");
     const [terms, setTerms] = useState([])
     const [grade, setSelectedOption] = useState('1');
+    const [isTermsVisible, setVisibility] = useState(false);
 
 
     // OpenAI configuration and models
@@ -32,7 +35,7 @@ export default function TextBox() {
             const termDefiniton = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
                 messages: [
-                    { role: "user", content: `${chatCompletion.data.choices[0].message.content} \n Can you also list the terms (along with their definitions) from the above excerpt that might be hard to understand for grade ${grade} students in a JSON-formatted response so that I can parse this response and put it in a JSON object in Javascript with the key of each entry being the term and the value being its definition? ` }
+                    { role: "user", content: `${chatCompletion.data.choices[0].message.content} \n Can you also list the terms (along with their definitions that a grade ${grade} student can understand) from the above excerpt that might be hard to understand for grade ${grade} students in a JSON-formatted response so that I can parse this response and put it in a JSON object in Javascript with the key of each entry being the term and the value being its definition? ` }
                 ]
             })
             setTerms(Object.entries(JSON.parse(termDefiniton.data.choices[0].message.content)));
@@ -63,6 +66,11 @@ export default function TextBox() {
         return options;
     };
 
+    // Toggle on
+    const handleOpen = () => {
+        setVisibility(true);
+    }
+
     const handleOptionChange = (event) => {
         setSelectedOption(event.target.value);
 
@@ -70,19 +78,21 @@ export default function TextBox() {
 
 
     return (
-        <div className='grid grid-cols-2 gap-4 p-8'>
+        <div className='grid grid-cols-2 gap-4 p-8 mt-2'>
+            { isTermsVisible && <TermsPopUp handleClose={() => setVisibility(false)} terms={terms} />}
             <textarea
                 value={text}
                 onChange={(event) => setText(event.target.value)}
                 rows={15}
                 cols={50}
                 className='bg-gray-200 p-8 rounded-md'
+                style={{ resize: 'none' }}
             />
 
 
             <textarea
                 className='bg-gray-200 p-8 rounded-md'
-                style={{ whiteSpace: 'pre-line' }}
+                style={{ whiteSpace: 'pre-line', resize: 'none' }}
                 readOnly
                 value={rep}
             />
@@ -102,14 +112,12 @@ export default function TextBox() {
                     Confirm
                 </button>
             </div>
-            <textarea
-                className='bg-gray-200 p-8 rounded-md'
-                
-                readOnly
-                value={terms.map((entry) => {
-                    return `- ${entry[0]}: ${entry[1]}\n`
-                })}
-            />
+            <button
+                type='button'
+                onClick={handleOpen}
+            >
+                Definitions    
+            </button>
             
 
 

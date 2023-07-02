@@ -35,7 +35,7 @@ export default function TextBox() {
             const termDefiniton = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
                 messages: [
-                    { role: "user", content: `${chatCompletion.data.choices[0].message.content} \n Can you also list the terms (along with their definitions that a grade ${grade} student can understand) from the above excerpt that might be hard to understand for grade ${grade} students in a JSON-formatted response so that I can parse this response and put it in a JSON object in Javascript with the key of each entry being the term and the value being its definition? ` }
+                    { role: "user", content: `${chatCompletion.data.choices[0].message.content} \n Can you also list the terms (along with their definitions that a grade ${grade} student can understand) from the above excerpt that might be hard to understand for grade ${grade} students in a JSON-formatted response so that I can parse this response and put it in a JSON object in Javascript with the key of each entry being the term and the value being its definition? Make sure the definition is explained in terms that a ${grade}th grader would understand.` }
                 ]
             })
             setTerms(Object.entries(JSON.parse(termDefiniton.data.choices[0].message.content)));

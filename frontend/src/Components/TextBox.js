@@ -28,7 +28,7 @@ export default function TextBox() {
             const chatCompletion = await openai.createChatCompletion({
                 model: "gpt-3.5-turbo",
                 messages: [
-                    { role: "user", content: `Please change the following text into a version that a ${grade}th grader can understand and put them in bullet points by topics that have proper newline for each bullet points:\n ${text} \n` },
+                    { role: "user", content: `Please change the following text into a version that a ${grade}th grader can understand. Ensure the same formatting as the original input with proper newlines added:\n ${text} \n` },
                 ],
             });
             setRep(chatCompletion.data.choices[0].message.content);
@@ -82,7 +82,7 @@ export default function TextBox() {
             { isTermsVisible && <TermsPopUp handleClose={() => setVisibility(false)} terms={terms} />}
             <textarea
                 value={text}
-                onChange={(event) => setText(event.target.value)}
+                onChange={(event) => setText((event.target.value))}
                 rows={15}
                 cols={50}
                 className='bg-gray-200 p-8 rounded-md'

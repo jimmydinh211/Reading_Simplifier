@@ -1,0 +1,20 @@
+{
+  "name": "Selected Text",
+  "version": "1.0",
+  "description": "This extension gets the text that the user has selected in a web page.",
+  "manifest_version": 3,
+  "permissions": ["scripting", "activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "js": ["contentscript.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

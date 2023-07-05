@@ -14,3 +14,19 @@ chrome.action.onClicked.addListener(async (tab) => {
 
   });
 });
+
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request === "DoTranslate") {
+      try {
+        console.log("Received DoTranslate Message");
+
+        //TODO: Have it read from translate queue and send request
+        //TODO: Move API request from contentscript to here.
+        //TODO: Add listener from content->here for adding text to the queue
+      } catch (err) {
+          console.log(err);
+      }
+  }
+  else
+      sendResponse({ body: "" }); // snub them.
+});

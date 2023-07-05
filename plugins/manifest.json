@@ -3,7 +3,8 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Get selected HTML"
+    "default_title": "Get selected HTML",
+    "default_popup": "popup.html"
   },
   "description": "Gets the HTML of the user's selection",
   "name": "HTML Selection",
@@ -19,7 +20,8 @@
         "<all_urls>"
       ],
       "js": [
-        "contentscript.js"
+        "contentscript.js",
+        "popup.js"
       ]
     }
   ],
